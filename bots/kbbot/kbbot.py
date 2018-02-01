@@ -60,11 +60,43 @@ class Bot:
         # Here we use "pj" to indicate that the card with index "index" should be played with the
         # PlayJack heuristics that was defined in class. Initialise a different variable if 
         # you want to apply a different strategy (that you will have to define in load.py)
-        variable_string = "pj" + str(index)
-        strategy_variable = Boolean(variable_string)
+        
+        # # Always play trump
+        trump_suit = state.get_trump_suit()
+        trump =  trump_suit.lower()
+        if trump == 'c':
+            pj = Boolean('pj4')
+            pq = Boolean('pq3')
+            pk = Boolean('pk2')
+            pt = Boolean('pt1')
+            pa = Boolean('pa0')
+        if trump == 'd':
+            pj = Boolean('pj9')
+            pq = Boolean('pq8')
+            pk = Boolean('pk7')
+            pt = Boolean('pt6')
+            pa = Boolean('pa5')
+        if trump == 'h':
+            pj = Boolean('pj14')
+            pq = Boolean('pq13')
+            pk = Boolean('pk12')
+            pt = Boolean('pt11')
+            pa = Boolean('pa10')
+        if trump == 's':
+            pj = Boolean('pj19')
+            pq = Boolean('pq18')
+            pk = Boolean('pk17')
+            pt = Boolean('pt16')
+            pa = Boolean('pa15')
+        
+        kb.add_clause(~pj, ~pq, ~pk, ~pt, ~pa)
+
+        # # always play Jack
+        # variable_string = "pj" + str(index)
+        # strategy_variable = Boolean(variable_string)
 
         # Add the relevant clause to the loaded knowledge base
-        kb.add_clause(~strategy_variable)
+        # kb.add_clause(~strategy_variable)
 
         # If the knowledge base is not satisfiable, the strategy variable is
         # entailed (proof by refutation)
